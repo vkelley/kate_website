@@ -1,0 +1,23 @@
+{% extends "tick/base_tick.haml" %}
+{% load title %}
+
+{% block title %}{% title "TICK" "Step 2 Submit" %}{% endblock %}
+
+{% block tick_content %}
+
+
+.page-header
+    %h2
+        Submit TICK Resource Step 2
+        %small (optional)
+
+%form.form-horizontal{:method => "post", :action => "{% url tick_submit_step_2 resource.id %}"}
+  {% csrf_token %}
+    .row
+        .span7
+            {{ form.errors }}
+            {% include "tick/submit/_step_2_form.haml" %}
+            .form-actions
+                %button.btn.btn-primary Submit
+    
+{% endblock %}

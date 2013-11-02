@@ -1,0 +1,122 @@
+{% extends "tick/base_tick.haml" %}
+{% load title %}
+{% load get_query %}
+
+{% block title %}{% title "Search Results" %}{% endblock %}
+
+{% block tick_content %}
+
+.row
+    .span9
+        .page-header
+            %h2
+                Search Results
+                %small
+                    %a{:href => "{% url tick_index %}?{{ url }}"} Modify Search
+        
+        .info
+            This search returned 
+            %a{:href => "{% url tick_index %}?{{ url }}"} 
+                {{ paginator.count }}
+                Result{{ paginator.count|pluralize }}
+
+        .row
+            .span6
+                {% if paginator.count > 1 %}
+                    .pagination
+                        %ul
+                            {% if this_page.has_previous %}
+                                %li
+                                    %a{:href => "{% url tick_search %}?{% get_query get_request page this_page.previous_page_number %}"} &larr;
+                            {% else %}
+                                %li.disabled
+                                    %a &larr;
+                            {% endif %}
+
+                            %li.disabled
+                                %a Page {{ page }} of {{ paginator.num_pages }}
+
+                            {% if this_page.has_next %}
+                                %li
+                                    %a{:href => "{% url tick_search %}?{% get_query get_request page this_page.next_page_number %}"} &rarr;
+                            {% else %}
+                                %li.disabled
+                                    %a &rarr;
+                            {% endif %}
+                {% endif %}
+
+                - if resources
+                    - for resource in resources
+                        %h3
+                            %a{:href => '{% url tick_resource resource.id %}'}
+                                {{ resource }}
+                        .help_text.info
+                            {% for level in resource.levels.all %}{% if not forloop.first %}, {% endif %}{{ level.name }}{% endfor %} -
+                            {% for content_area in resource.content_areas.all %}
+                                {% if not forloop.first %}, {% endif %}{{ content_area.name }}
+                            {% endfor %}
+                        %p {{ resource.description|striptags|truncatewords:50|safe }}
+                        %hr
+                - else
+                    %h3 No Results
+                    %p Your search returned <strong>0</strong> results.
+                
+                {% if paginator.count > 1 %}
+                    .pagination
+                        %ul
+                            {% if this_page.has_previous %}
+                                %li
+                                    %a{:href => "{% url tick_search %}?{% get_query get_request page this_page.previous_page_number %}"} &larr;
+                            {% else %}
+                                %li.disabled
+                                    %a &larr;
+                            {% endif %}
+
+                            %li.disabled
+                                %a Page {{ page }} of {{ paginator.num_pages }}
+
+                            {% if this_page.has_next %}
+                                %li
+                                    %a{:href => "{% url tick_search %}?{% get_query get_request page this_page.next_page_number %}"} &rarr;
+                            {% else %}
+                                %li.disabled
+                                    %a &rarr;
+                            {% endif %}
+                {% endif %}
+
+            .span3
+                %h3 Subjects
+                %ul.nav.nav-tabs.nav-stacked
+                    %li
+                        <a href="{% url tick_search %}?{% get_query get_request content_areas "all" %}">
+                            - if not get_request.content_areas
+                                %strong All
+                            - else
+                                All
+                        </a>
+                    - for content_area in content_areas
+                        %li
+                            %a{:href => "{% url tick_search %}?{% get_query get_request content_areas content_area.id %}"}
+                                - if content_area == form_content_area
+                                    %strong {{ content_area }}
+                                - else
+                                    {{ content_area }}
+
+                %h3 Levels
+                %ul.nav.nav-tabs.nav-stacked
+                    %li
+                        <a href="{% url tick_search %}?{% get_query get_request levels "all" %}">
+                            - if not get_request.levels
+                                %strong All
+                            - else
+                                All
+                        </a>
+                    - for level in levels
+                        %li
+                            %a{:href => "{% url tick_search %}?{% get_query get_request levels level.id %}"}
+                                - if level == form_level
+                                    %strong {{ level }}
+                                - else
+                                    {{ level }}
+
+{% endblock %}

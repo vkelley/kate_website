@@ -1,0 +1,50 @@
+{% extends "tick/base_tick.haml" %}
+{% load title %}
+
+{% block title %}{% title "TICK" %}{% endblock %}
+
+{% block tick_content %}
+ 
+%form{:action => "{% url tick_search %}", :method => "get"}
+    .well.form-search
+        {% if form.keyword.value %}
+            %input.span4.search-query{ :type => "text", :name => "keyword", :placeholder => "Search TICK...", :value => "{{ form.keyword.value }}"}
+        {% else %}
+            %input.span4.search-query{ :type => "text", :name => "keyword", :placeholder => "Search TICK..." }
+        {% endif %}
+
+    .form-horizontal
+        %fieldset
+            %legend Refine your search
+
+            .control-group
+                %label.control-label Kentucky Core Content
+                .controls
+                    {{ form.content_standards }}
+
+            .control-group
+                %label.control-label Common Core Content
+                .controls
+                    {{ form.common_core_standards }}
+
+            .control-group
+                %label.control-label Level
+                .controls
+                    {{ form.levels }}
+
+            .control-group
+                %label.control-label Subject
+                .controls
+                    {{ form.content_areas }}
+
+            .control-group
+                %label.control-label Resource Type
+                .controls
+                    {{ form.sub_focus }}
+
+            .form-actions
+                %button.btn.btn-primary{:type => "submit"} Search
+                %button.btn{:type => "reset"} Clear
+
+
+{% endblock %}

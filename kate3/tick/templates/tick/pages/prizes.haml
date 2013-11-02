@@ -1,0 +1,14 @@
+{% extends "tick/base_tick.haml" %}
+{% load title %}
+
+{% block title %}{% title "TICK" "Prizes" %}{% endblock %}
+
+{% block tick_content %}
+
+.row
+    .span5
+        .page-header
+            %h2 Current Prize Giveaway
+        {{ notice.body_html|safe }}
+
+{% endblock %}

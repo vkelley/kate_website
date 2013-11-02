@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+.row
+	.span3.offset9
+		%a.pull-right{:href => "http://twitter.com/KATE_TICK"}
+			%img{:src => "http://kate.murraystate.edu/media/img/gosocial/png/32/twitter.png", :alt => "Twitter"}
+		%a.pull-right{:href => "http://www.facebook.com/pages/Kentucky-Academy-of-Technology-Education/328820322228"}
+			%img{:src => "http://kate.murraystate.edu/media/img/gosocial/png/32/facebook.png", :alt => "Facebook"}
+	
+.hero-unit
+    %h1 Kentucky Academy of Technology Education
+    %p We collect the most innovative and successful technology practices in K–12 education and make them available to the teachers and students of Kentucky &mdash; the United States &mdash; and the world.
+    %p
+        %a.btn.btn-primary.btn-large{:href => "{% url pages_about %}"}
+            Learn More
+
+.row
+    .span3
+        %h3
+            %a{:href => "{% url tick_index %}"} TICK
+        %p A repository of instructional lesson plans, activities, and resources for teachers in Kentucky.
+
+    .span3
+        %h3 
+            %a{:href => "{% url resources_index %}"} Resources
+        %p Professional development, tutorials, educational, and Kentucky resources for using technology.
+
+    .span3
+        %h3
+            %a{:href => "{% url katelinks_index %}"} Links
+        %p Links related to instructional education and technology aligned to grade levels and areas.
+
+    .span3
+        %h3
+            %a{:href => "{% url mobile_apps_index %}"} Mobile Apps
+        %p Popular iPhone, iPad, and Android apps used specifically for education.
+%hr
+
+.row
+    .span3
+        %p
+            %img{:src => "http://coekate.murraystate.edu/media/kate/tick/images/tick_justletters.gif"}
+        .well
+            %h5 TICK Prize Giveaway
+            %p {{ tick_prize }}
+
+    .span6
+        %h2 Recently Published on TICK
+        - for resource in recent_resources
+            %h3 <a href="{{ resource.content_object.get_absolute_url }}">{{ resource.content_object.title }}</a>
+            %p.help_text Published {{ resource.created_at|date:"F j, Y" }}
+            %p {{ resource.content_object.description|urlizetrunc:70|safe }}</p> 
+            %hr
+
+    .span3
+        %h2 TICK News
+        %p {{ tick_news }}
+        %p
+            %span.label.label-warning RSS
+            <a href="{% url tick_feed "tick_recent" %}">Recently on TICK</a>
+        
+
+{% endblock %}

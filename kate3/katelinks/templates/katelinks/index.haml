@@ -1,0 +1,96 @@
+{% extends "katelinks/base_katelinks.haml" %}
+
+- load title
+
+- block title
+    - title "Links"
+
+{% block katelinks_content %}
+
+.row
+    .span9
+        %form{:method => "post", :action => "{% url katelinks_search %}"}
+            {% csrf_token %}
+            .well.form-search
+                {{ form.keyword }}
+            .form-horizontal
+                .control-group
+                    %label.control-label {{ form.category.label }}
+                    .controls
+                        {{ form.category }}
+                .control-group
+                    %label.control-label {{ form.level.label }}
+                    .controls
+                        {{ form.level }}
+                .control-group
+                    %label.control-label {{ form.focus.label }}
+                    .controls
+                        {{ form.focus }}
+                .form-actions
+                    %button.btn.btn-primary Search
+
+    .span3
+        %h4 More Resources
+        %p Looking for resources to integrate technology into your classroom? Check out TICK, a repository of instructional lesson plans, activities, and resources for teachers in Kentucky.
+        %p
+            %a{:href => "{% url tick_index %}"} Visit TICK
+
+%hr
+
+.row
+    .span3
+        %h4 {{ art }}
+        %ul.nav.nav-tabs.nav-stacked
+            - for category in art.category.all
+                {% include "katelinks/_category_item.haml" %}
+
+    .span2
+        %h4 {{ math }}
+        %ul.nav.nav-tabs.nav-stacked
+            - for category in math.category.all
+                {% include "katelinks/_category_item.haml" %}
+
+    .span4
+        %h4 {{ practical }}
+        %ul.nav.nav-tabs.nav-stacked
+            - for category in practical.category.all
+                {% include "katelinks/_category_item.haml" %}
+
+    .span3
+        %h4 {{ reading }}
+        %ul.nav.nav-tabs.nav-stacked
+            - for category in reading.category.all
+                {% include "katelinks/_category_item.haml" %}
+
+.row
+    .span3
+        %h4 {{ science }}
+        %ul.nav.nav-tabs.nav-stacked
+            - for category in science.category.all
+                {% include "katelinks/_category_item.haml" %}
+
+    .span2
+        %h4 {{ social }}
+        %ul.nav.nav-tabs.nav-stacked
+            - for category in social.category.all
+                {% include "katelinks/_category_item.haml" %}
+
+    .span2
+        %h4 {{ writing }}
+        %ul.nav.nav-tabs.nav-stacked
+            - for category in writing.category.all
+                {% include "katelinks/_category_item.haml" %}
+
+    .span2
+        %h4 {{ web }}
+        %ul.nav.nav-tabs.nav-stacked
+            - for category in web.category.all
+                {% include "katelinks/_category_item.haml" %}
+
+    .span3
+        %h4 {{ other }}
+        %ul.nav.nav-tabs.nav-stacked
+            - for category in other.category.all
+                {% include "katelinks/_category_item.haml" %}
+
+{% endblock %}
