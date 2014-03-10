@@ -55,17 +55,25 @@ def index(request):
         filtered = True
 
     paginator = Paginator(apps, 10)
-    page = int(request.GET.get('page', 1))
+    page = request.GET.get('page', 1)
+	try:
+        apps = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        apps = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        apps = paginator.page(paginator.num_pages)
 
     levels = Level.objects.all()
     content_areas = ContentArea.objects.all()
     types = Type.objects.all()
 
     context = {
-        'apps': paginator.page(page).object_list,
-        'this_page': paginator.page(page),
+        'apps': apps.object_list,
+        'this_page': apps,
         'paginator': paginator,
-        'page': page,
+        'page': apps.number,	#current page number
         'get_request': get_request,
         'levels': levels, 
         'content_areas': content_areas,
